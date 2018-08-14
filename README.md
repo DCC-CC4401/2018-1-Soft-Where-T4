@@ -1,6 +1,6 @@
-# Tarea 3: SAD Development 2018-1 CC4401 Ingeniería de Software
+# Tarea 4: Soft, where? 2018-1 CC4401 Ingeniería de Software
 
-Proyecto Git para la _Tarea 3_ del grupo 5 **__SAD Development__**.
+Proyecto Git para la _Tarea 4_ del grupo **__Soft, Where?__**.
 
 Instrucciones para ejecutar el proyecto:
 
@@ -10,7 +10,9 @@ Instrucciones para ejecutar el proyecto:
 
 3. Si es la primera vez que se ejecuta el proyecto, realizar las migraciones correspondientes utilizando `python manage.py migrate`
 
-4. Ejecutar usando `python manage.py runserver`
+4. Ejecutar `python manage.py shell < populateDatabase.py` para poblar base de datos con casos de prueba
+
+5. Ejecutar usando `python manage.py runserver`
      
 *Nota: Para servir los archivos estáticos, debe mantenerse activo el modo de desarrollo, es decir, no modificar la variable debug en **settings.py**.*
 
