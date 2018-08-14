@@ -6,7 +6,8 @@ Comando Para correr el Script: python manage.py shell < populateDatabase.py
 ## admin
 # TODO agregar usuarios admin
 from django.contrib.auth import get_user_model
-admin = get_user_model().objects.create_user(email="miniadmin@cei.cl", password="administrador")
+get_user_model().objects.all().delete()
+admin = get_user_model().objects.create_superuser(email="admin@cei.cl", password="administrador")
 admin.is_staff = True
 admin.first_name = "Administrador"
 admin.last_name = "McAdmin"
