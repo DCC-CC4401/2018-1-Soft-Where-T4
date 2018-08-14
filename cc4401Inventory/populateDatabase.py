@@ -5,9 +5,21 @@ Comando Para correr el Script: python manage.py shell < populateDatabase.py
 # users
 ## admin
 # TODO agregar usuarios admin
+from django.contrib.auth import get_user_model
+admin = get_user_model().objects.create_user(email="miniadmin@cei.cl", password="administrador")
+admin.is_staff = True
+admin.first_name = "Administrador"
+admin.last_name = "McAdmin"
+admin.rut = "12.345.678-9"
+admin.save()
 
 ## natural users
 # TODO agregar usuarios naturales
+user = get_user_model().objects.create_user(email="usuario@cei.cl", password="usuario")
+user.first_name = "Usuario"
+user.last_name = "McUser"
+user.rut = "01.234.567-8"
+user.save()
 
 # articles
 # TODO agregar imagenes a los articulos (no se cómo hacerlo)
