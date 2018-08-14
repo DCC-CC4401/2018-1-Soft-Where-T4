@@ -28,6 +28,10 @@ Article.objects.all().delete()
 
 silla = Article(name = 'Silla CEC', description = 'La silla que nos pelamos del CEC', state = 'D')
 silla.save()
+metal = Article(name = 'Silla sala', description = 'La silla que no nos pelamos del CEC', state = 'R')
+metal.save()
+madera = Article(name = 'Mesa', description = 'Una mesa, pero no de plástico', state = 'L')
+madera.save()
 mesa = Article(name = 'Mesa plástico', description = 'Una mesa, pero de plástico', state = 'P')
 mesa.save()
 
@@ -40,6 +44,9 @@ b01 = Space(name = 'B01', description = 'De las mejores salas para mechones que 
 b01.save()
 b02 = Space(name = 'B02', description = 'De las mejores salas para mechones que hay', state='P')
 b02.save()
-
+b03 = Space(name = 'B03', description = 'De las mejores salas para mechones que hay', state='R')
+b03.save()
+b04 = Space(name = 'B04', description = 'De las mejores salas para mechones que hay', state='D')
+b04.save()
 # reservations
 # TODO agregar reservas
