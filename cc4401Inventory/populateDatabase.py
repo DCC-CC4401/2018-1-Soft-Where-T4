@@ -23,17 +23,19 @@ user.rut = "01.234.567-8"
 user.save()
 
 # articles
-# TODO agregar imagenes a los articulos (no se cómo hacerlo)
 from articlesApp.models import Article
 Article.objects.all().delete()
 
-silla = Article(name = 'Silla CEC', description = 'La silla que nos pelamos del CEC', state = 'D')
+silla = Article(name='Silla CEC', description='La silla que nos pelamos del CEC', state='D',
+                image='static/img/items/silla_cec.jpg')
 silla.save()
-metal = Article(name = 'Silla sala', description = 'La silla que no nos pelamos del CEC', state = 'R')
+metal = Article(name='Silla sala', description='La silla que no nos pelamos del CEC', state='R',
+                image='static/img/items/silla_sala.jpg')
 metal.save()
-madera = Article(name = 'Mesa', description = 'Una mesa, pero no de plástico', state = 'L')
+madera = Article(name='Mesa', description='Una mesa, pero no de plástico', state='L', image='static/img/items/mesa.jpg')
 madera.save()
-mesa = Article(name = 'Mesa plástico', description = 'Una mesa, pero de plástico', state = 'P')
+mesa = Article(name='Mesa plástico', description='Una mesa, pero de plástico', state='P',
+               image='static/img/items/mesa_plastico.jpg')
 mesa.save()
 
 # spaces
