@@ -27,7 +27,9 @@ def login_submit(request):
 
     if user is not None:
         login(request, user)
-        return redirect('/articles/')
+        if not (user.is_superuser and user.is_staff):
+            return redirect('/articles/')
+        return redirect('/admin/')
     else:
         messages.warning(request, 'La contraseña ingresada no es correcta o el usuario no existe')
         return redirect('/user/login')

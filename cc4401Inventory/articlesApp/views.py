@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from articlesApp.models import Article
+from articlesApp.forms import ArticleForm
 from loansApp.models import Loan
 from django.db import models
 from datetime import datetime, timedelta
@@ -8,7 +9,6 @@ from datetime import datetime, timedelta
 import random, os
 import pytz
 from django.contrib import messages
-
 
 
 @login_required
@@ -134,3 +134,26 @@ def article_edit_description(request, article_id):
         a.save()
 
     return redirect('/article/' + str(article_id) + '/edit')
+
+@login_required
+def article_creation(request):
+    if request.method == "POST":
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/items-panel/')
+    else:
+        form = ArticleForm()
+        return render(request, "article_create.html", {'form': form})
+
+@login_required
+def article_delete(request, article_id):
+    if not request.user.is_staff:
+        return redirect('/')
+    else:
+        try:
+            article = Article.objects.get(id=article_id)
+            article.delete()
+            return redirect('/admin/items-panel/')
+        except:
+            return redirect('/')
