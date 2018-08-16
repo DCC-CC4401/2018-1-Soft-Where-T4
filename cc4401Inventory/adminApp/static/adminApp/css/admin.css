@@ -44,3 +44,12 @@
 .center-column {
     text-align: center;
 }
+
+.button-add {
+    color: #79bcb5;
+}
+
+.button-add:hover {
+    color: #e54e53;
+    transition-duration: .5s;
+}
