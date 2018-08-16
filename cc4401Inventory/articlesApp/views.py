@@ -145,3 +145,15 @@ def article_creation(request):
     else:
         form = ArticleForm()
         return render(request, "article_create.html", {'form': form})
+
+@login_required
+def article_delete(request, article_id):
+    if not request.user.is_staff:
+        return redirect('/')
+    else:
+        try:
+            article = Article.objects.get(id=article_id)
+            article.delete()
+            return redirect('/admin/items-panel/')
+        except:
+            return redirect('/')

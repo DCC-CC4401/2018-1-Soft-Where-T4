@@ -50,7 +50,10 @@
             <td>{{ article.state }}</td>
             <td class="center-column">
               <a class="table-button" href="{% url 'article_data_admin' article.id %}"><i class="fas fa-edit"></i></a>
-              <a class="table-button" href="#"><i class="fas fa-trash"></i></a>
+              <a class="table-button" href="{% url 'article_delete' article.id %}"
+                 onclick="return confirm('¿Desea eliminar este artículo? (esta acción no se puede deshacer)')">
+                  <i class="fas fa-trash"></i>
+              </a>
             </td>
           </tr>
           {% endfor %}
