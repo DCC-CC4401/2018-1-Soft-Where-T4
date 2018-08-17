@@ -82,5 +82,5 @@ def search(request):
         else:
             articles = Article.objects.filter(name__icontains=query.lower())
 
-        products = None if (request.GET['query'] == "") else articles
-        return landing_search(request, products)
+        #products = None if (request.GET['query'] == "") else articles
+        return landing_search(request, articles)
