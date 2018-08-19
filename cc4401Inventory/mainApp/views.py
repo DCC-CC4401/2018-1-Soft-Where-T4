@@ -74,7 +74,6 @@ def landing_search(request, products):
 def search(request):
     if request.method == "GET":
         query = request.GET['query']
-        #a_type = "comportamiento_no_definido"
         a_state = "A" if (request.GET['estado'] == "A") else request.GET['estado']
 
         if not (a_state == "A"):
@@ -82,5 +81,11 @@ def search(request):
         else:
             articles = Article.objects.filter(name__icontains=query.lower())
 
-        #products = None if (request.GET['query'] == "") else articles
+        fechaInicio = request.GET['fechaInicio']
+        horaInicio = request.GET['horaInicio']
+        fechaFin = request.GET['fechaFin']
+        horaFin = request.GET['horaFin']
+
+
+
         return landing_search(request, articles)
