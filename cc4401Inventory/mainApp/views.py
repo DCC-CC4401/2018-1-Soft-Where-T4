@@ -86,6 +86,23 @@ def search(request):
         fechaFin = request.GET['fechaFin']
         horaFin = request.GET['horaFin']
 
+        if fechaInicio == "" or horaInicio == "" or fechaFin == "" or horaFin == "":
+            return landing_search(request, articles)
 
+        import datetime
+        from django.utils.timezone import utc
+
+        datetimeInicio = datetime.datetime.strptime(fechaInicio + ' ' + horaInicio, '%Y-%m-%d %H:%M').replace(tzinfo=utc)
+        datetimeFin = datetime.datetime.strptime(fechaFin + ' ' + horaFin, '%Y-%m-%d %H:%M').replace(tzinfo=utc)
+
+        now = datetime.datetime.utcnow().replace(tzinfo=utc)
+
+        print(now,datetimeFin)
+
+        if datetimeFin < now:
+            return landing_search(request, [])
+
+        if datetimeFin < datetimeInicio:
+            return landing_search(request, [])
 
         return landing_search(request, articles)
