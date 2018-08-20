@@ -77,7 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Item(models.Model):
     name = models.CharField('Nombre', max_length=40)
     description = models.TextField('Descripción', blank=True)
-    image = models.ImageField('Imagen del articulo', upload_to='static/img/items', blank=True)
+    image = models.ImageField('Imagen', upload_to='static/img/items', blank=True)
 
     class Meta:
         abstract = True
