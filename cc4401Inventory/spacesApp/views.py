@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
+from django.utils.timezone import localtime
+import datetime
 from spacesApp.models import Space
 from reservationsApp.models import Reservation
-
-from datetime import datetime, timedelta
 
 import random, os
 import pytz
@@ -11,12 +11,12 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def space_data(request, space_id):
+def space_data(request, space_id, date=None):
     try:
         espacio = Space.objects.get(id=space_id)
 
         last_reservations = Reservation.objects.filter(space=espacio,
-                                                       ending_date_time__lt=datetime.now(tz=pytz.utc)
+                                                       ending_date_time__lt=datetime.datetime.now(tz=pytz.utc)
                                                        ).order_by('-ending_date_time')[:10]
 
         reservation_list = list()
@@ -32,7 +32,49 @@ def space_data(request, space_id):
             else:
                 reservation_list.append(starting_day + ", " + starting_hour + " a " + ending_day + ", " + ending_hour)
 
-        context = {
+        if date:
+            current_date = date
+            current_week = datetime.datetime.strptime(current_date, "%Y-%m-%d").date().isocalendar()[1]
+        else:
+            try:
+                current_week = datetime.datetime.strptime(request.GET["date"], "%Y-%m-%d").date().isocalendar()[1]
+                current_date = request.GET["date"]
+            except:
+                current_week = datetime.date.today().isocalendar()[1]
+                current_date = datetime.date.today().strftime("%Y-%m-%d")
+
+        reservations = Reservation.objects.filter(starting_date_time__week=current_week, state__in=['P', 'A'],space=espacio)
+        colores = {'A': 'rgba(0,153,0,0.7)',
+                   'P': 'rgba(51,51,204,0.7)'}
+
+        res_list = []
+        for i in range(5):
+            res_list.append(list())
+        for r in reservations:
+            reserv = list()
+            reserv.append(r.space.name)
+            reserv.append(localtime(r.starting_date_time).strftime("%H:%M"))
+            reserv.append(localtime(r.ending_date_time).strftime("%H:%M"))
+            reserv.append(colores[r.state])
+            res_list[r.starting_date_time.isocalendar()[2] - 1].append(reserv)
+
+        move_controls = list()
+        move_controls.append(
+            (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=-4)).strftime("%Y-%m-%d"))
+        move_controls.append(
+            (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=-1)).strftime("%Y-%m-%d"))
+        move_controls.append(
+            (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=1)).strftime("%Y-%m-%d"))
+        move_controls.append(
+            (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=4)).strftime("%Y-%m-%d"))
+
+        delta = (datetime.datetime.strptime(current_date, "%Y-%m-%d").isocalendar()[2]) - 1
+        monday = ((datetime.datetime.strptime(current_date, "%Y-%m-%d") - datetime.timedelta(days=delta)).strftime(
+            "%d/%m/%Y"))
+        context = {'reservations': res_list,
+                   'current_date': current_date,
+                   'controls': move_controls,
+                   'actual_monday': monday,
             'espacio': espacio,
             'last_reservations': reservation_list
         }
@@ -53,8 +95,6 @@ def verificar_horario_habil(horario):
 
 
 @login_required
-
-
 def space_request(request):
     if request.method == 'POST':
         space = Space.objects.get(id=request.POST['space_id'])
@@ -68,7 +108,7 @@ def space_request(request):
 
                 if start_date_time > end_date_time:
                     messages.warning(request, 'La reserva debe terminar después de iniciar.')
-                elif start_date_time < datetime.now() + timedelta(hours=1):
+                elif start_date_time < datetime.datetime.now() + datetime.timedelta(hours=1):
                     messages.warning(request, 'Los pedidos deben ser hechos al menos con una hora de anticipación.')
                 elif start_date_time.date() != end_date_time.date():
                     messages.warning(request, 'Los pedidos deben ser devueltos el mismo día que se entregan.')
