@@ -44,7 +44,7 @@
     <div class = "col-md-5 offset-2">
       <h3 class="block-title">Solicitar reserva</h3>
       <form action="{% url  'article_request' %}" method="post" class="reservation-form">
-        {% csrf_token%}
+        {% csrf_token %}
         <input type="hidden" name="article_id" value="{{ article.id }}">
 
         <div class = "row">
