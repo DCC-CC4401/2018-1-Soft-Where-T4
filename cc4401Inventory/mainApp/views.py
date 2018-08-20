@@ -1,9 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.timezone import localtime
 import datetime
 from articlesApp.models import Article
 from reservationsApp.models import Reservation
 from django.contrib.auth.decorators import login_required
+
+@login_required
+def landing(request):
+    if not (request.user.is_superuser and request.user.is_staff):
+        return redirect('/articles/')
+    return redirect('/admin/')
 
 
 @login_required
