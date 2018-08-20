@@ -60,3 +60,9 @@ venv/
 db.sqlite3
 
 **/migrations
+
+# Latex
+Informe/main.aux
+Informe/main.log
+Informe/main.synctex.gz
+
