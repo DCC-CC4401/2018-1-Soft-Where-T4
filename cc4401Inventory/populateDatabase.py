@@ -43,6 +43,8 @@ mesa.save()
 from spacesApp.models import Space
 Space.objects.all().delete()
 
+quincho = Space(name = 'quincho', description = 'Best Quincho', state = 'P', image='static/img/items/quincho.jpg')
+quincho.save()
 b01 = Space(name = 'B01', description = 'De las mejores salas para mechones que hay', state='P')
 b01.save()
 b02 = Space(name = 'B02', description = 'De las mejores salas para mechones que hay', state='P')
