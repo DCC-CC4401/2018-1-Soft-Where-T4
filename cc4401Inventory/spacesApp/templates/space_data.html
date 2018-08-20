@@ -86,17 +86,13 @@
       </form>
 
         <div class = "row reservation-history-container">
-          <h3 class="block-title"> Historial de reservas</h3>
-            <div class="reservation-history">
-                <ul>
-                    {% for elemento in last_reservations %}
-                        <li>{{ elemento }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+            <p>Estás viendo la semana del lunes <b>{{ actual_monday }}</b></p>
+                {% include '_schedule_landing.html' %}
+
         </div>
     </div>
 
   </div>
+
 </div>
 {% endblock %}
