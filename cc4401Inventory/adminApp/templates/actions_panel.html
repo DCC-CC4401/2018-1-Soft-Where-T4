@@ -15,7 +15,7 @@
 
     </div>
     <div class="row">
-      <div class="col-md-6 admin-table-container">
+      <div class="col-md-12 admin-table-container">
         <h1>Reservas</h1>
         <form action="{% url 'modify_reservations' %}" method="post">
         {% csrf_token %}
@@ -27,6 +27,8 @@
             <th scope="col">Nombre del Espacio</th>
             <th scope="col">Usuario</th>
             <th scope="col">Fecha de Prestamo</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Aceptado o Rechazado por</th>
             <th scope="col"> Seleccionar</th>
           </tr>
           </thead>
@@ -38,11 +40,13 @@
             <td>{{ reservation.space.name }}</td>
             <td>{{ reservation.user.get_full_name }}</td>
             <td>{{ reservation.starting_date_time }}</td>
+            <td>{{ reservation.get_state_display }}</td>
+            <td>{{ reservation.admin.get_full_name }}</td>
             <td><input type="checkbox" name="selected" value="{{ reservation.id }}"></td>
           </tr>
           {% endfor %}
           <tr>
-            <td colspan="5" style="background-color: #79bcb5"><hr size="10"></td>
+            <td colspan="7" style="background-color: #79bcb5"><hr size="10"></td>
           </tr>
           {% for reservation in reservations_query %}
           <tr>
@@ -50,22 +54,25 @@
             <td>{{ reservation.space.name }}</td>
             <td>{{ reservation.user.get_full_name }}</td>
             <td>{{ reservation.starting_date_time }}</td>
+            <td>{{ reservation.get_state_display }}</td>
+            <td>{{ reservation.admin.get_full_name }}</td>
             <td><input type="checkbox" name="selected" value="{{ reservation.id }}"></td>
           </tr>
           {% endfor %}
 
           </tbody>
         </table>
-        <div class="row">
+        <div class="row justify-content-center">
             <button name="accept" value="1" type="submit"> Aceptar Reservas</button><button name="accept" value="0" type="submit"> Rechazar Reservas</button>
         </div>
         </form>
       </div>
+    </div>
 
-
-      <div class="col-md-6 admin-table-container">
+    <div class="row">
+      <div class="col-md-12 admin-table-container">
         <h1>Préstamos</h1>
-        <div class="row">
+        <div class="row justify-content-center">
           <form action="" method="get">
             <input type="hidden" name="date" value="{{ current_date }}">
             <div class="btn-group" role="group" aria-label="Basic example" style="margin: 10px auto;">
@@ -86,6 +93,7 @@
                 <th scope="col">Usuario</th>
                 <th scope="col">Fecha de Prestamo</th>
                 <th scope="col">Estado</th>
+                <th scope="col">Aceptado o Rechazado por</th>
                 <th scope="col"> Seleccionar</th>
               </tr>
             </thead>
@@ -97,11 +105,12 @@
                 <td>{{ loan.user.get_full_name }}</td>
                 <td>{{ loan.starting_date_time }}</td>
                 <td>{{ loan.get_state_display }}</td>
+                <td>{{ loan.admin.get_full_name }}</td>
                 <td><input type="checkbox" name="selected" value="{{ loan.id }}"></td>
               </tr>
             {% endfor %}
               <tr>
-                  <td colspan="6" style="background-color: #79bcb5"><hr size="10"></td>
+                  <td colspan="7" style="background-color: #79bcb5"><hr size="10"></td>
               </tr>
             {% for loan in loans %}
               <tr>
@@ -110,12 +119,13 @@
                 <td>{{ loan.user.get_full_name }}</td>
                 <td>{{ loan.starting_date_time }}</td>
                 <td>{{ loan.get_state_display }}</td>
+                <td>{{ loan.admin.get_full_name }}</td>
                 <td><input type="checkbox" name="selected" value="{{ loan.id }}"></td>
               </tr>
             {% endfor %}
             </tbody>
           </table>
-          <div class="row">
+          <div class="row justify-content-center">
             <button name="accept" value="1" type="submit"> Aceptar Préstamos</button><button name="accept" value="0" type="submit"> Rechazar Préstamos</button>
           </div>
         </form>

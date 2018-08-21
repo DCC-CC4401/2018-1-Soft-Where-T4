@@ -127,10 +127,12 @@ def modify_reservations(request):
         if accept:
             for reservation in reservations:
                 reservation.state = 'A'
+                reservation.admin = user
                 reservation.save()
         else:
             for reservation in reservations:
                 reservation.state = 'R'
+                reservation.admin = user
                 reservation.save()
 
     return redirect('/admin/actions-panel')
@@ -147,10 +149,12 @@ def modify_loans(request):
         if accept:
             for loan in loans:
                 loan.state = 'A'
+                loan.admin = user
                 loan.save()
         else:
             for loan in loans:
                 loan.state = 'R'
+                loan.admin = user
                 loan.save()
 
     return redirect('/admin/actions-panel')
