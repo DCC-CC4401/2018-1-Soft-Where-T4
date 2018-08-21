@@ -9,6 +9,8 @@ import pytz
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from spacesApp.forms import SpaceForm
+
 
 @login_required
 def space_data(request, space_id, date=None):
@@ -224,6 +226,18 @@ def space_edit_description(request, space_id):
         s.save()
 
     return redirect('/space/' + str(space_id) + '/edit')
+
+
+@login_required
+def space_creation(request):
+    if request.method == "POST":
+        form = SpaceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/items-panel/')
+    else:
+        form = SpaceForm()
+        return render(request, "space_create.html", {'form': form})
 
 
 @login_required
