@@ -43,7 +43,8 @@ def space_data(request, space_id, date=None):
                 current_week = datetime.date.today().isocalendar()[1]
                 current_date = datetime.date.today().strftime("%Y-%m-%d")
 
-        reservations = Reservation.objects.filter(starting_date_time__week=current_week, state__in=['P', 'A'],space=espacio)
+        reservations = Reservation.objects.filter(starting_date_time__week=current_week, state__in=['P', 'A'],
+                                                  space=espacio)
         colores = {'A': 'rgba(0,153,0,0.7)',
                    'P': 'rgba(51,51,204,0.7)'}
 
@@ -75,9 +76,9 @@ def space_data(request, space_id, date=None):
                    'current_date': current_date,
                    'controls': move_controls,
                    'actual_monday': monday,
-            'espacio': espacio,
-            'last_reservations': reservation_list
-        }
+                   'espacio': espacio,
+                   'last_reservations': reservation_list
+                   }
 
         return render(request, 'space_data.html', context)
     except Exception as e:
@@ -129,13 +130,64 @@ def space_request(request):
 
 
 @login_required
-def space_data_admin(request, space_id):
+def space_data_admin(request, space_id, date=None):
     if not request.user.is_staff:
         return redirect('/')
     else:
         try:
+
+            if date:
+                current_date = date
+                current_week = datetime.datetime.strptime(current_date, "%Y-%m-%d").date().isocalendar()[1]
+            else:
+                try:
+                    current_week = datetime.datetime.strptime(request.GET["date"], "%Y-%m-%d").date().isocalendar()[1]
+                    current_date = request.GET["date"]
+                except:
+                    current_week = datetime.date.today().isocalendar()[1]
+                    current_date = datetime.date.today().strftime("%Y-%m-%d")
+
+            espacio = Space.objects.get(id=space_id)
+            reservations = Reservation.objects.filter(starting_date_time__week=current_week, state__in=['P', 'A'],
+                                                      space=espacio)
+            colores = {'A': 'rgba(0,153,0,0.7)',
+                       'P': 'rgba(51,51,204,0.7)'}
+
+            res_list = []
+            for i in range(5):
+                res_list.append(list())
+            for r in reservations:
+                reserv = list()
+                reserv.append(r.space.name)
+                reserv.append(localtime(r.starting_date_time).strftime("%H:%M"))
+                reserv.append(localtime(r.ending_date_time).strftime("%H:%M"))
+                reserv.append(colores[r.state])
+                res_list[r.starting_date_time.isocalendar()[2] - 1].append(reserv)
+
+            move_controls = list()
+            move_controls.append(
+                (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=-4)).strftime(
+                    "%Y-%m-%d"))
+            move_controls.append(
+                (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=-1)).strftime(
+                    "%Y-%m-%d"))
+            move_controls.append(
+                (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=1)).strftime(
+                    "%Y-%m-%d"))
+            move_controls.append(
+                (datetime.datetime.strptime(current_date, "%Y-%m-%d") + datetime.timedelta(weeks=4)).strftime(
+                    "%Y-%m-%d"))
+
+            delta = (datetime.datetime.strptime(current_date, "%Y-%m-%d").isocalendar()[2]) - 1
+            monday = ((datetime.datetime.strptime(current_date, "%Y-%m-%d") - datetime.timedelta(days=delta)).strftime(
+                "%d/%m/%Y"))
+
             space = Space.objects.get(id=space_id)
             context = {
+                'reservations': res_list,
+                'current_date': current_date,
+                'controls': move_controls,
+                'actual_monday': monday,
                 'space': space
             }
             return render(request, 'space_data_admin.html', context)
