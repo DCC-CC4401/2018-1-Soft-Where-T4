@@ -87,11 +87,16 @@
                                                  aria-labelledby="v-pills-{{ reservation.pk }}-tab">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h2 class="mb-1">{{ reservation.space.name }}</h2>
-                                            <medium><strong>{{ reservation.starting_date_time }}</strong></medium>
+                                            <h4>{{ reservation.space.name }}
+                                                {% if reservation.state == "A" %}
+                                                    <span class="badge badge-success"><i class="fas fa-chevron-left"></i> {{  reservation.get_state_display }}</span>
+                                                {% elif reservation.state == "R" %}
+                                                    <span class="badge badge-danger"><i class="fas fa-chevron-left"></i> {{  reservation.get_state_display }}</span>
+                                                {% elif reservation.state == "P" %}
+                                                    <span class="badge badge-warning"><i class="fas fa-chevron-left"></i> {{  reservation.get_state_display }}</span>
+                                        {% endif %}</h4></div><div>
+                                                <small>{{ reservation.starting_date_time|date:'Y-m-d'  }} desde las {{ reservation.starting_date_time|date:'H:i'  }} a {{ reservation.ending_date_time|date:'H:i'  }}</small>
                                         </div>
-                                        <medium class="text-muted">{{ reservation.get_state_display }}</medium>
-
                                         <!-- Imagen de las reservas-->
                                         {% if reservation.space.image %}
                                             <img src=" {% static reservation.space.image.url %}" class="img-fluid"
