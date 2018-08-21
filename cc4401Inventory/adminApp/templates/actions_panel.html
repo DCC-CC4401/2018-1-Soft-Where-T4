@@ -41,7 +41,7 @@
             <td>{{ reservation.user.get_full_name }}</td>
             <td>{{ reservation.starting_date_time }}</td>
             <td>{{ reservation.get_state_display }}</td>
-            <td>{{ reservation.admin.get_full_name }}</td>
+            <td></td>
             <td><input type="checkbox" name="selected" value="{{ reservation.id }}"></td>
           </tr>
           {% endfor %}
