@@ -79,7 +79,10 @@
             <td>{{ space.get_state_display }}</td>
             <td class="center-column">
               <a class="table-button" href="{% url 'space_data_admin' space.id %}"><i class="fas fa-edit"></i></a>
-              <a class="table-button" href="#"><i class="fas fa-trash"></i></a>
+              <a class="table-button" href="{% url 'space_delete' space.id %}"
+                 onclick="return confirm('¿Desea eliminar este espacio? (esta acción no se puede deshacer)')">
+                  <i class="fas fa-trash"></i>
+              </a>
             </td>
           </tr>
           {% endfor %}
