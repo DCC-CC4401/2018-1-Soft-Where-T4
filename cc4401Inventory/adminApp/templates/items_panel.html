@@ -47,7 +47,7 @@
           <tr>
             <td>{{ article.id }}</td>
             <td>{{ article.name }}</td>
-            <td>{{ article.state }}</td>
+            <td>{{ article.get_state_display }}</td>
             <td class="center-column">
               <a class="table-button" href="{% url 'article_data_admin' article.id %}"><i class="fas fa-edit"></i></a>
               <a class="table-button" href="{% url 'article_delete' article.id %}"
